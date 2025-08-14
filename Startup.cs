@@ -30,6 +30,13 @@ namespace TodoApi
             });
 
             services.AddDbContext<TodoContext>(options => options.UseInMemoryDatabase("TodoList"));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost4000",
+                    builder => builder.WithOrigins("http://localhost:4000")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +64,8 @@ namespace TodoApi
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors("AllowLocalhost4000");
 
             app.UseAuthorization();
 
